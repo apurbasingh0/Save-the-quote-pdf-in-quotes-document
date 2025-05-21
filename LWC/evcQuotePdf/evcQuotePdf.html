@@ -1,0 +1,29 @@
+<!--
+  @description       : 
+  @author            : Apurba Singh
+  @group             : Appstrail
+  @last modified by  : Apurba Singh
+  @last modified on  : 13-08-2024
+-->
+<template>
+    <div>
+        <lightning-modal-header label="EVC PDF Preview">
+        </lightning-modal-header>
+    </div>
+    <div class="modal-content">
+        <div if:true={spinnerOn} class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </div>
+        <template if:true={pdfview}>
+            <div if:false={viewPDF} class="iframe-container">
+                <iframe class="pdf-iframe" name="" src={url}></iframe>
+            </div>
+        </template>
+    </div>
+    <div>
+        <lightning-modal-footer>
+            <lightning-button class="slds-button" variant="neutral" label="Cancel" onclick={handleDismiss}></lightning-button>
+            <lightning-button class="slds-button slds-m-left_x-small" variant="brand" label="Save" onclick={handleSave} disabled={disabledButton}></lightning-button>
+        </lightning-modal-footer>
+    </div>
+</template>

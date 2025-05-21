@@ -1,0 +1,21 @@
+.modal-content {
+        height: 65vh; 
+        padding: 1rem; 
+    }
+
+    .iframe-container {
+        height: 87%; 
+    }
+
+    .pdf-iframe {
+        height: 63vh; 
+        width: 100%; 
+        border: none;
+    }
+
+    .slds-modal__container {
+        max-width: 90rem !important; 
+        width: 95% !important; 
+        min-width: 60rem !important;
+        max-height: 95vh !important; 
+    }

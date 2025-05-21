@@ -1,0 +1,216 @@
+<!-- 
+* @description       : EVC quote template
+* @authorName        : Apurba Singh
+* @group             : Appstrail
+* @last modified on  : 19-08-2024
+* @last modified by  : Apurba Singh 
+-->
+<apex:page renderAs="pdf" standardController="Quote" extensions="CreateEVCQUotePDFController" applyBodyTag="false"  applyHtmlTag="false" showHeader="false" sidebar="false" standardStylesheets="false" >
+   <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                    size: A4;
+                    padding-top: 40px;
+                    font-size: 6px;
+                    margin-top: 0.8cm;
+                    margin-bottom: 0px ;
+                    margin-right: -2px;
+                    margin-left: -2px; 
+
+                    @top-left{ 
+                        content: element(header);
+                     }
+                    /* @bottom-right {
+                        content: element(footer);
+                     } */
+                    }
+                div.header {
+                        padding: 10px;
+                        position: running(header);
+                        /* border-top: solid 2px black; */
+                        bottom: 20px;
+
+                }
+                .page-break{
+                    display:block;
+                    page-break-after: always;
+                }
+                body {
+                    font-family: 'Helvetica', sans-serif;
+                    color: #333;
+                    font-size: 12px;
+                }
+                .container {
+                    padding: 20px;
+                }
+                .title {
+                    margin: 4px 0;
+                    font-size: 11px;
+                }
+                .subtitle {
+                    font-size: 12px;
+                    margin-bottom: 20px;
+                }
+                .content {
+                    margin-top: 20px;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    font-size: 10px;
+                }
+                th, td {
+                    border: 1px solid #000;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                ul {
+                    list-style-type: none;
+                    padding-left: 0;
+                }
+                ul li {
+                    margin-bottom: 10px;
+                }  
+                p {
+                    margin: 5px 0;
+                }  
+                ul {
+                    list-style-type: none;
+                    padding-left: 10px;
+                    margin: 0;
+                }
+                ul li {
+                    margin: 0;
+                } 
+                .header-section {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .left-align {
+                    text-align: left;
+                }
+                .right-align {
+                    text-align: right;
+                }   
+                           
+                  </style>
+                   
+              </head>
+          <body > 
+
+        <!-- Header -->
+        <div class="header" style="width:100%">
+            <apex:image url="{!$Resource.EVCHeader}" style="object-fit: contain; width: 100%; height: auto; max-height: 100px;" ></apex:image>   
+        </div>  
+        
+        <!-- Page-1 -->       
+        <div style="width:100%">
+            <br/>
+            <br/>
+            <apex:image url="{!$Resource.EVCFirstPage}" style="width: 100%; height: 100%"></apex:image>
+            
+        </div>
+        
+     <!-- Page-2 -->
+     <div>
+        <br/>
+        <br/>
+        <apex:image url="{!$Resource.EVCSecondPage}" style="width: 100%; height: 100%; top:40px" ></apex:image>
+     </div> 
+
+     <!-- Page-3 -->
+     <div>
+        <div class="container">
+            <br/>
+            
+            <p>To,</p>
+            <div class="header-section">
+                <div class="left-align">
+                    <p>Customer name: {!quote.Account.Name}</p>
+                    <p>Customer address: {!quote.BillingStreet}, {!quote.BillingCity}, {!quote.BillingState}, {!quote.BillingPostalCode},
+                        {!quote.BillingCountry}. </p>
+                    
+                </div>
+                <div class="right-align" style="text-aling:left">
+                    <p>Date: {!quote.CreatedDate}</p>
+                    
+                </div>
+                <div class="left-align">
+                    <p>Quotation No. {!quote.Quotation_No__c}</p>
+                </div>
+                <div class="right-align" style="text-aling:left">
+                    <p>Rev No: {!versionNumber}</p>
+                </div>
+            </div>
+
+            <p>Dear Sir/Madam,</p>
+            <p>As per discussion and your request we Panasonic Life Solutions India Private Limited are pleased to submit you our non-binding proposal defined as follows:</p>
+            <div class="content">
+            <table >
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Item Description</th>
+                        <th>Qty</th>
+                        <th>Base Price Per Unit</th>
+                        <th>GST Taxes</th>
+                        <th>Unit rate inclusive of taxes</th>
+                        <th>Total -Inclusive of taxes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:variable value="{!0}" var="count" />
+                    <apex:repeat value="{!quoteItems}" var="item" >
+                        <tr>
+                            <td>{!count + 1}</td>
+                            <apex:variable var="count" value="{!count + 1}" />
+                            <td>{!item.Product2.Name}</td>
+                            <td>{!item.Quantity}</td>
+                            <td>{!item.Discount_Price__c}</td>
+                            <td>{!item.GST__c}</td>
+                            <td>{!item.Unit_Rate__c}</td>
+                            <td>{!item.Total_Price_EVC__c}</td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+            </table>
+            </div>
+            <br/>
+            <p class="title" > <span style="color: rgb(0, 0, 0);"><b>Payment Terms:</b> </span>{!quote.Payment_Terms__c}</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>GST: </b> </span>Extra as applicable at the time of dispatch. Any other tax applicable at the time of invoice will be additional</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Technical Specifications: </b></span>Supply will be as per Panasonic Specification sheet shared along with the Offer.</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Additional Request: </b> </span>{!quote.Additional_Request__c}</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Remarks: </b></span></p>
+                <li style="font-size: 11px;"><apex:outputText value="{!quote.Remarks__c}" escape="false"/></li>
+                <!-- <ul>
+                    <li style="font-size: 11px;">1.  Installation and CMS not in scope of Panasonic</li>
+                    <li style="font-size: 11px;">2.  Commissioning for DC chargers has to be done separately from Panasonic</li>
+                    <li style="font-size: 11px;">3.  The commissioning of the charger after relocation has to be done by the authorized personnel from Panasonic team, if not warranty will be void</li>
+                    <li style="font-size: 11px;">4.  Our offers/Proposals are without obligation and any agreement against this proposal is subject to standard force majeure conditions</li>
+                    <li style="font-size: 11px;">5.  AMC &amp; Extended warranty not part of offer and at extra cost</li>
+                </ul> -->
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Price: </b></span>Prices are up to delivery at site, unloading in the scope of client.</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Delivery: </b></span><b>{!quote.Delivery__c}</b></p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Transit Insurance: </b></span>Up to delivery of material at site.</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Delivery: </b></span>FOR site, unloading in client’s scope.</p>
+                <p class="title"><span style="color: rgb(0, 0, 0);"><b>Warranty:</b> </span>{!quote.Warranty__c}</p>
+            </div>
+        <div>
+        <apex:image url="{!$Resource.EVCThirdPage}" style="width: 100%; height: 100%; top:40px" ></apex:image>
+        </div>
+     </div> 
+
+     <!-- Page-4 -->
+     <div>
+        <apex:image url="{!$Resource.EVCFourthPage}" style="width: 100%; height: 100%; top:40px" ></apex:image>
+     </div> 
+
+
+         </body>
+      </html>
+</apex:page>
